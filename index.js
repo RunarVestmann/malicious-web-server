@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
-const { RequestModel } = require("./db");
+const { RequestModel, UserModel } = require("./db");
 
 const PORT = process.env.PORT || 4000;
 const publicFilePath = path.join(__dirname, "public");
@@ -38,6 +38,22 @@ app.post("/requests", async (req, res) => {
 app.delete("/requests", async (req, res) => {
   RequestModel.deleteMany();
   res.status(204).send();
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    const requests = await UserModel.find();
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
+
+app.post("/users", async (req, res) => {
+  UserModel.create({
+    ...req.body,
+  });
+  res.status(201).send();
 });
 
 app.use((req, res) =>

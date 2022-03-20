@@ -78,3 +78,16 @@ input {
   width: 100%;
   margin-top: 24px;
 }
+
+#email-shower {
+  border: 1px solid #dadce0;
+  border-radius: 16px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
