@@ -32,13 +32,9 @@ app.get("/requests", async (req, res) => {
   }
 });
 
-app.post("/requests", async (req, res) => {
-  console.log("request POST");
-});
-
 // Used for debugging/developmental purposes
 app.delete("/requests", async (req, res) => {
-  RequestModel.deleteMany();
+  await RequestModel.deleteMany({});
   res.status(204).send();
 });
 
@@ -62,7 +58,7 @@ app.post("/users", async (req, res) => {
 
 // Used for debugging/developmental purposes
 app.delete("/users", async (req, res) => {
-  UserModel.deleteMany();
+  await UserModel.deleteMany({});
   res.status(204).send();
 });
 
