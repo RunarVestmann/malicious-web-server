@@ -5,7 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const { RequestModel, UserModel } = require("./db");
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SEND);
 
 const PORT = process.env.PORT || 4000;
 const publicFilePath = path.join(__dirname, "public");
