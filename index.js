@@ -53,8 +53,15 @@ app.post("/users", async (req, res) => {
   UserModel.create({
     ...req.body,
     ip: req.ip,
+    agent: req.headers["user-agent"],
   });
   res.status(201).send();
+});
+
+// Used for debugging/developmental purposes
+app.delete("/users", async (req, res) => {
+  UserModel.deleteMany();
+  res.status(204).send();
 });
 
 app.use((req, res) =>
