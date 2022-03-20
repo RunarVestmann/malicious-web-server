@@ -52,6 +52,7 @@ app.get("/users", async (req, res) => {
 app.post("/users", async (req, res) => {
   UserModel.create({
     ...req.body,
+    ip: req.ip,
   });
   res.status(201).send();
 });
